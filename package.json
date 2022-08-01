@@ -1,0 +1,21 @@
+{
+  "name": "akinator-bot",
+  "version": "0.0.1",
+  "description": "Akinator slack app starter",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.11.0",
+    "aki-api": "^6.0.8",
+    "dotenv": "^8.2.0",
+    "giphy-api": "^2.0.2",
+    "https-proxy-agent": "^5.0.0"
+  },
+  "devDependencies": {
+    "jest": "^27.4.5",
+    "nodemon": "^2.0.4"
+  }
+}
