@@ -46,7 +46,7 @@ app.action('button_click', async ({ body, client, ack, say }) => {
         // Acknowledge the action
         await ack();
 
-        game = new Akinator('fr')
+        game = new Akinator('en')
 
         await game.start()
         
