@@ -11,7 +11,6 @@
     "@slack/bolt": "^3.11.0",
     "aki-api": "^6.0.8",
     "dotenv": "^8.2.0",
-    "giphy-api": "^2.0.2",
     "https-proxy-agent": "^5.0.0"
   },
   "devDependencies": {

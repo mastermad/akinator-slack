@@ -1,7 +1,9 @@
 const { App } = require("@slack/bolt");
 const config = require("dotenv").config();
-const Akinator = require('./Akinator.js');
-var game = null;
+const Akinator = require('./akinator.js');
+
+// local variable for game
+var game;
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
@@ -9,7 +11,7 @@ const app = new App({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     socketMode:true, // enable the following to use socket mode
     appToken: process.env.APP_TOKEN
-  });
+});
 
 app.command("/start", async ({ command, ack, say }) => {
     try {
@@ -29,8 +31,8 @@ app.command("/start", async ({ command, ack, say }) => {
                                 "text": "Start the game",
                                 "emoji": true
                             },
-                            "value": "button_click",
-                            "action_id": "button_click"
+                            "value": "start_button",
+                            "action_id": "start_button"
                         }
                     ]
                 }
@@ -42,7 +44,19 @@ app.command("/start", async ({ command, ack, say }) => {
     }
 });
 
-app.action('button_click', async ({ body, client, ack, say }) => {
+app.command("/stop", async ({ command, ack, say }) => {
+    try {
+        // Acknowledge the action
+        await ack();
+
+        game ? say("Game was stopped") : say("Game is already stopped");
+
+    } catch (error) {
+      console.error(error);
+    }
+});
+
+app.action('start_button', async ({ body, client, ack, say }) => {
         // Acknowledge the action
         await ack();
 
@@ -54,66 +68,30 @@ app.action('button_click', async ({ body, client, ack, say }) => {
 });
 
 app.action('click_me_0', async ({ body, client, ack, say }) => {
-    // Acknowledge the action
-    await ack();
-
-    await game.guess(0);
-    
-    if(!game.ended){
-        await  say(game.component)
-    } else {
-        await game.stop()
-        await  say(game.embed)
-    }
+    handleInteraction(0, ack, say);
 });
 
 app.action('click_me_1', async ({ body, client, ack, say }) => {
-    // Acknowledge the action
-    await ack();
-
-    await game.guess(1);
-    
-    if(!game.ended){
-        await  say(game.component)
-    } else {
-        await game.stop()
-        await  say(game.embed)
-    }
+    handleInteraction(1, ack, say);
 });
 
 app.action('click_me_2', async ({ body, client, ack, say }) => {
-    // Acknowledge the action
-    await ack();
-
-    await game.guess(2);
-    
-    if(!game.ended){
-        await  say(game.component)
-    } else {
-        await game.stop()
-        await  say(game.embed)
-    }
+    handleInteraction(2, ack, say);
 });
 
 app.action('click_me_3', async ({ body, client, ack, say }) => {
-    // Acknowledge the action
-    await ack();
-
-    await game.guess(3);
-    
-    if(!game.ended){
-        await  say(game.component)
-    } else {
-        await game.stop()
-        await  say(game.embed)
-    }
+    handleInteraction(3, ack, say);
 });
 
 app.action('click_me_4', async ({ body, client, ack, say }) => {
+    handleInteraction(4, ack, say);
+});
+
+handleInteraction = async function (index, ack, say) {
     // Acknowledge the action
     await ack();
 
-    await game.guess(4);
+    await game.guess(index);
 
     if(!game.ended){
         await  say(game.component)
@@ -121,8 +99,7 @@ app.action('click_me_4', async ({ body, client, ack, say }) => {
         await game.stop()
         await  say(game.embed)
     }
-    
-});
+};
 
 (async () => {
   const port = 3000
